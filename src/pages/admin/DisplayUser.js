@@ -38,7 +38,24 @@ const DisplayUser = () => {
     }
   };
 
+  const checkoutUser = async () => {
+    let resp = await axios
+      .get(`http://localhost:9000/checkoutuser/?username=${currentUser}`)
+      .catch((error) => {
+        console.log(error);
+        Navigate("/");
+        return;
+      });
+
+    if (resp) {
+      console.log(resp);
+      console.log("User is checked out");
+      return;
+    }
+  };
+
   useEffect(() => {
+    checkoutUser();
     loadUserData();
   }, []);
   return (

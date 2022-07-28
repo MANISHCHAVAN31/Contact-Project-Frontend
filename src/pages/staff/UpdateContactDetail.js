@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StaffNavbar from "../../components/staff/StaffNavbar";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -30,6 +30,26 @@ const UpdateContactDetail = () => {
       return;
     }
   };
+
+  const checkoutUser = async () => {
+    let resp = await axios
+      .get(`http://localhost:9000/checkoutuser/?username=${currentUser}`)
+      .catch((error) => {
+        console.log(error);
+        Navigate("/");
+        return;
+      });
+
+    if (resp) {
+      console.log(resp);
+      console.log("User is checked out");
+      return;
+    }
+  };
+
+  useEffect(() => {
+    checkoutUser();
+  }, []);
   return (
     <div>
       <StaffNavbar />

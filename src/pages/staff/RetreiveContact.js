@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import RetreiveContactDetail from "../../components/staff/RetreiveContactDetail";
 import StaffNavbar from "../../components/staff/StaffNavbar";
@@ -8,6 +8,7 @@ import StaffNavbar from "../../components/staff/StaffNavbar";
 const RetreiveContact = () => {
   const currentUser = useParams().username;
   const [allContacts, setAllContacts] = useState({});
+  const Navigate = useNavigate();
 
   const retreiveContact = async (id) => {
     let resp = await axios
@@ -44,7 +45,24 @@ const RetreiveContact = () => {
     }
   };
 
+  const checkoutUser = async () => {
+    let resp = await axios
+      .get(`http://localhost:9000/checkoutuser/?username=${currentUser}`)
+      .catch((error) => {
+        console.log(error);
+        Navigate("/");
+        return;
+      });
+
+    if (resp) {
+      console.log(resp);
+      console.log("User is checked out");
+      return;
+    }
+  };
+
   useEffect(() => {
+    checkoutUser();
     loadDeletedContacts();
   }, []);
 

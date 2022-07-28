@@ -1,28 +1,31 @@
 import axios from "axios";
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../components/admin/Navbar";
 
 const AdminDashboard = () => {
   const currentUser = useParams().username;
+  const Navigate = useNavigate();
 
-  // const checkAuthentication = async () => {
-  //   const resp = await axios
-  //     .post("http://localhost:9000/checkAuthentication", { currentUser })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       return;
-  //     });
+  const checkoutUser = async () => {
+    let resp = await axios
+      .get(`http://localhost:9000/checkoutuser/?username=${currentUser}`)
+      .catch((error) => {
+        console.log(error);
+        Navigate("/");
+        return;
+      });
 
-  //   if (resp) {
-  //     console.log(resp);
-  //     return;
-  //   }
-  // };
+    if (resp) {
+      console.log(resp);
+      console.log("User is checked out");
+      return;
+    }
+  };
 
-  // useEffect(() => {
-  //   checkAuthentication();
-  // }, []);
+  useEffect(() => {
+    checkoutUser();
+  }, []);
 
   return (
     <div>

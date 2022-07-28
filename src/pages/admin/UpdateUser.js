@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useLocation, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Navbar from "../../components/admin/Navbar";
 
@@ -10,6 +10,7 @@ const UpdateUser = () => {
   const [parameter, setParameter] = useState("");
   const [value, setValue] = useState("");
   const [userData, setUserData] = useState({});
+  const Navigate = useNavigate();
 
   const loadUserData = async () => {
     let resp = await axios
@@ -46,7 +47,24 @@ const UpdateUser = () => {
     }
   };
 
+  const checkoutUser = async () => {
+    let resp = await axios
+      .get(`http://localhost:9000/checkoutuser/?username=${currentUser}`)
+      .catch((error) => {
+        console.log(error);
+        Navigate("/");
+        return;
+      });
+
+    if (resp) {
+      console.log(resp);
+      console.log("User is checked out");
+      return;
+    }
+  };
+
   useEffect(() => {
+    checkoutUser();
     loadUserData();
   }, []);
 

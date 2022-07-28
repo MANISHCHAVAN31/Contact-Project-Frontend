@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Navbar from "../../components/admin/Navbar";
@@ -47,6 +47,26 @@ const CreateUser = () => {
       return;
     }
   };
+
+  const checkoutUser = async () => {
+    let resp = await axios
+      .get(`http://localhost:9000/checkoutuser/?username=${currentUser}`)
+      .catch((error) => {
+        console.log(error);
+        Navigate("/");
+        return;
+      });
+
+    if (resp) {
+      console.log(resp);
+      console.log("User is checked out");
+      return;
+    }
+  };
+
+  useEffect(() => {
+    checkoutUser();
+  }, []);
   return (
     <div>
       <Navbar />

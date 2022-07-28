@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import StaffNavbar from "../../components/staff/StaffNavbar";
 
@@ -8,6 +8,7 @@ const CreateContact = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const currentUser = useParams().username;
+  const Navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +36,26 @@ const CreateContact = () => {
       return;
     }
   };
+
+  const checkoutUser = async () => {
+    let resp = await axios
+      .get(`http://localhost:9000/checkoutuser/?username=${currentUser}`)
+      .catch((error) => {
+        console.log(error);
+        Navigate("/");
+        return;
+      });
+
+    if (resp) {
+      console.log(resp);
+      console.log("User is checked out");
+      return;
+    }
+  };
+
+  useEffect(() => {
+    checkoutUser();
+  }, []);
 
   return (
     <div>
